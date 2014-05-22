@@ -15,15 +15,19 @@ TYPE TPacman = CLASS(TMobileObject)
 		CONSTRUCTOR create(_x, _y, _direction : INTEGER); OVERLOAD;
 		CLASS PROCEDURE loadGfx();
 		PROCEDURE setDirection(dir : INTEGER);
+        PROCEDURE spawn();
     	FUNCTION getScore() : INTEGER;
 		FUNCTION getCurrentAnimation() : TAnimation;
 		FUNCTION isDead() : BOOLEAN;
+		FUNCTION getLives() : INTEGER;
 		FUNCTION getType() : TMapObjectType; OVERRIDE;
 		PROCEDURE onCollide(other : TMapObject; objects : TLinkedList); OVERRIDE;
 		PROCEDURE move(map : TMap; objects : TLinkedList); OVERRIDE;
 		PROCEDURE draw(canvas : TCanvas); OVERRIDE;
 	PRIVATE
+		startx, starty, startdir : INTEGER;
 		dead : BOOLEAN;
+		lives : INTEGER;
 		score : INTEGER;
 		nextDirection : INTEGER;
 		currentAnimation : TAnimation;
@@ -37,15 +41,15 @@ CONSTRUCTOR TPacman.create(_x, _y, _direction : INTEGER);
 VAR i : INTEGER;
 BEGIN
 	INHERITED create(_x, _y, TILE_SIZE, TILE_SIZE, DEFAULT_SPEED, _direction);
-	nextDirection := _direction;
-	poweruptimer := 0;
+	startdir := direction;
+	startx := getLeft();
+	starty := getTop();
 	FOR i := 0 TO 4 DO
 		animations[i] := TAnimation.create(i*6, 6, 3, TRUE);
     FOR i := 5 TO 9 DO
-		animations[i] := TAnimation.create(i*6, 6, 3, FALSE);
-	currentAnimation := animations[direction].start();
-	score := 0;
-	dead := FALSE;
+		animations[i] := TAnimation.create(i*6, 6, 4, FALSE);
+	lives := 4;
+	spawn();
 END;
 
 CLASS PROCEDURE TPacman.loadGfx();
@@ -65,6 +69,20 @@ BEGIN
 	nextDirection := dir;
 END;
 
+PROCEDURE TPacman.spawn();
+BEGIN
+	x := startx;
+    y := starty;
+	direction := startdir;
+    nextDirection := startdir;
+	score := 0;
+	lives := lives-1;
+	dead := FALSE;
+	speed := DEFAULT_SPEED;
+	poweruptimer := 0;
+	currentAnimation := animations[direction].start();
+END;
+
 FUNCTION TPacman.getScore() : INTEGER;
 BEGIN
 	getScore := score;
@@ -78,6 +96,11 @@ END;
 FUNCTION TPacman.isDead() : BOOLEAN;
 BEGIN
 	isDead := dead;
+END;
+
+FUNCTION TPacman.getLives() : INTEGER;
+BEGIN
+	getLives := lives;
 END;
 
 FUNCTION TPacman.getType() : TMapObjectType;

@@ -84,13 +84,13 @@ BEGIN
 				objects.insertFront(pac);
 			END
             ELSE IF ch = 'R' THEN
-				objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 0, AI_SLEEP))
+				objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 0))
 			ELSE IF ch = 'B' THEN
-            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 1, AI_SLEEP))
+            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 1))
             ELSE IF ch = 'Y' THEN
-            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 2, AI_SLEEP))
+            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 2))
             ELSE IF ch = 'P' THEN
-            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 3, AI_SLEEP))
+            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 3))
 		END;
 	END;
 
@@ -134,11 +134,19 @@ BEGIN
 	BEGIN
 		IF TMapObject(ptr.getObject()).getType() = OBJECT_GHOST THEN
 		BEGIN
-			IF pac.getScore() > TGhost(ptr.getObject()).getColor()*200 THEN
+			IF pac.getScore() >= TGhost(ptr.getObject()).getColor()*200 THEN
 				TGhost(ptr.getObject()).setAIMode(AI_CHASE);
 			IF pac.isDead() THEN
 				TGhost(ptr.getObject()).setAIMode(AI_IDLE);
 		END;
+	END;
+	IF pac.isDead() AND pac.getCurrentAnimation().isOver() AND (pac.getLives() > 0) THEN
+    BEGIN
+		pac.spawn();
+		ptr := NIL;
+		WHILE objects.iterate(ptr) DO
+			IF TMapObject(ptr.getObject()).getType() = OBJECT_GHOST THEN
+				TGhost(ptr.getObject()).spawn();
 	END;
 END;
 

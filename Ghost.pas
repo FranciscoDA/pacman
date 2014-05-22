@@ -14,8 +14,9 @@ VAR gfx : ARRAY [0.. NUM_COLORS * 5 * 4 - 1] OF TBitmap;
 
 TYPE TGhost = CLASS(TMobileObject)
 	PUBLIC
-		CONSTRUCTOR create(_x, _y, _direction, _color : INTEGER; m : AIMode);
+		CONSTRUCTOR create(_x, _y, _direction, _color : INTEGER);
         CLASS PROCEDURE loadGfx();
+		PROCEDURE spawn();
 		PROCEDURE setAIMode(m : AIMode);
 		FUNCTION getColor() : INTEGER;
 
@@ -26,6 +27,7 @@ TYPE TGhost = CLASS(TMobileObject)
 		PROCEDURE move(map : TMap; objects : TLinkedList); OVERRIDE;
 		PROCEDURE draw(canvas : TCanvas); OVERRIDE;
 	PRIVATE
+		startx, starty : INTEGER;
 		animations : ARRAY [0..4] OF TAnimation;
 		currentAnimation : TAnimation;
         color : INTEGER;
@@ -35,16 +37,29 @@ END;
 
 IMPLEMENTATION
 
-CONSTRUCTOR TGhost.create(_x, _y, _direction, _color : INTEGER; m : AIMode);
+CONSTRUCTOR TGhost.create(_x, _y, _direction, _color : INTEGER);
 VAR i : INTEGER;
 BEGIN
-	INHERITED create(_x, _y, TILE_SIZE, TILE_SIZE, DEFAULT_SPEED, 2);
+	INHERITED create(_x, _y, TILE_SIZE, TILE_SIZE, DEFAULT_SPEED, 0);
+	startx := getLeft();
+	starty := getTop();
 	path := TLinkedList.create();
     color := _color;
 	FOR i := 0 TO LENGTH(animations)-1 DO
 		animations[i] := TAnimation.create(i*4, 4, 3, TRUE);
+	spawn();
+END;
+
+PROCEDURE TGhost.spawn();
+BEGIN
+	x := startx;
+	y := starty;
+	setAiMode(AI_SLEEP);
+	path.destroy();
+	path := TlinkedList.create();
+	direction := 0;
 	currentAnimation := animations[direction].start();
-	setAIMode(m);
+	speed := DEFAULT_SPEED;
 END;
 
 PROCEDURE TGhost.setAIMode(m : AIMode);
