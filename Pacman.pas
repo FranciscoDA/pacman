@@ -48,7 +48,7 @@ BEGIN
 		animations[i] := TAnimation.create(i*6, 6, 3, TRUE);
     FOR i := 5 TO 9 DO
 		animations[i] := TAnimation.create(i*6, 6, 4, FALSE);
-	lives := 4;
+	lives := 3;
 	spawn();
 END;
 
@@ -76,7 +76,6 @@ BEGIN
 	direction := startdir;
     nextDirection := startdir;
 	score := 0;
-	lives := lives-1;
 	dead := FALSE;
 	speed := DEFAULT_SPEED;
 	poweruptimer := 0;
@@ -124,6 +123,7 @@ BEGIN
 		IF NOT dead THEN
 		BEGIN
 	    	dead := TRUE;
+			lives := lives - 1;
 			currentAnimation := animations[direction+5].start();
 		END;
 	END

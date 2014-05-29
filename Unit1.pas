@@ -16,6 +16,7 @@ TYPE TForm1 = CLASS(TForm)
     PROCEDURE init(Sender: TObject);
     procedure frame(Sender: TObject);
 	PUBLIC
+		gui : TBitmap;
 		map : TMap;
 		objects : TLinkedList;
 		pac : TPacman;
@@ -54,6 +55,9 @@ BEGIN
 	TMap.loadGfx();
 	TFood.loadGfx();
 	TPowerUp.loadGfx();
+	gui := TBitmap.create();
+	gui.loadFromFile('gfx/gui.bmp');
+	gui.Transparent := TRUE;
 
 	objects := TLinkedList.create();
 	assignFile(f, 'maps/map.txt');
@@ -64,10 +68,10 @@ BEGIN
 	FOR y :=0  TO h-1 DO
 	BEGIN
 		READ(f, ch);
-	    READ(f, ch);
+		IF ch = #13 THEN READ(f, ch);
+		IF ch = #10 THEN READ(f, ch);
 		FOR x := 0 TO w-1 DO
 		BEGIN
-			READ(f, ch);
 			IF ch = '1' THEN
 				map.setTile(x,y, 1)
 			ELSE IF ch = '2' THEN
@@ -90,7 +94,9 @@ BEGIN
             ELSE IF ch = 'Y' THEN
             	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 2))
             ELSE IF ch = 'P' THEN
-            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 3))
+            	objects.insertBack(TGhost.create(x*TILE_SIZE+TILE_SIZE DIV 2, y*TILE_SIZE+TILE_SIZE DIV 2, 2, 3));
+
+			READ(f, ch);
 		END;
 	END;
 
@@ -123,9 +129,11 @@ BEGIN
 	image1.canvas.fillRect(rect);
 
 	image1.Canvas.font.Color := RGB(255,255,255);
-	image1.Canvas.font.Style := [fsBold, fsUnderline];
+	image1.Canvas.font.Style := [fsBold];
 	image1.Canvas.font.Size := 12;
 	image1.Canvas.TextOut(rect.left, 60, 'SCORE: ' + inttostr(pac.getScore()));
+	image1.canvas.Draw(rect.Left, 90, gui);
+	image1.canvas.TextOut(rect.Left + gui.Width + 5, 95, 'x ' + inttostr(pac.getLives()));
 
 	image1.Canvas.Unlock();
 
@@ -140,13 +148,16 @@ BEGIN
 				TGhost(ptr.getObject()).setAIMode(AI_IDLE);
 		END;
 	END;
-	IF pac.isDead() AND pac.getCurrentAnimation().isOver() AND (pac.getLives() > 0) THEN
+	IF pac.isDead() AND pac.getCurrentAnimation().isOver() THEN
     BEGIN
-		pac.spawn();
-		ptr := NIL;
-		WHILE objects.iterate(ptr) DO
-			IF TMapObject(ptr.getObject()).getType() = OBJECT_GHOST THEN
-				TGhost(ptr.getObject()).spawn();
+		IF pac.getLives() > 0 THEN
+		BEGIN
+			pac.spawn();
+			ptr := NIL;
+			WHILE objects.iterate(ptr) DO
+				IF TMapObject(ptr.getObject()).getType() = OBJECT_GHOST THEN
+					TGhost(ptr.getObject()).spawn();
+		END;
 	END;
 END;
 

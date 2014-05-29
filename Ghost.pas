@@ -8,7 +8,7 @@ USES Windows, Graphics, Classes, Map, MapObject, LinkedList, Animation,
 CONST NUM_COLORS = 4;
 CONST DEFAULT_SPEED = 2;
 
-TYPE AIMode = (AI_SLEEP, AI_CHASE, AI_IDLE);
+TYPE AIMode = (AI_SLEEP, AI_CHASE, AI_IDLE, AI_FLEE);
 
 VAR gfx : ARRAY [0.. NUM_COLORS * 5 * 4 - 1] OF TBitmap;
 
