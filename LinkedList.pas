@@ -1,5 +1,7 @@
 UNIT LinkedList;
 
+{$MODE Delphi}
+
 INTERFACE
 
 TYPE TLinkedNode = CLASS

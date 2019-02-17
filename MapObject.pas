@@ -1,8 +1,10 @@
 unit MapObject;
 
+{$MODE Delphi}
+
 INTERFACE
 
-USES Windows, Graphics, Classes, Map, LinkedList;
+USES LCLIntf, LCLType, LMessages, Graphics, Classes, Map, LinkedList;
 
 TYPE TMapObjectType = (OBJECT_FOOD, OBJECT_POWERUP, OBJECT_PACMAN, OBJECT_GHOST);
 
@@ -226,6 +228,7 @@ BEGIN
 			arr[y*xt+x].width := sprw;
 			arr[y*xt+x].height := sprh;
 			arr[y*xt+x].canvas.copyRect(dest, bmp.canvas, src);
+                        arr[y*xt+x].TransparentColor := clFuchsia;
 		END
 	END;
 END;

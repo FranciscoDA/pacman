@@ -1,7 +1,9 @@
 program Project1;
 
+{$MODE Delphi}
+
 uses
-  Forms,
+  Forms, Interfaces, objects,
   Unit1 in 'Unit1.pas' {Form1},
   Pacman in 'Pacman.pas',
   Map in 'Map.pas',
@@ -12,7 +14,7 @@ uses
   Animation in 'Animation.pas',
   Astar in 'Astar.pas';
 
-{$R *.res}
+{.$R *.res}
 
 begin
   Application.Initialize;

@@ -1,8 +1,10 @@
 unit Pacman;
 
+{$MODE Delphi}
+
 interface
 
-USES Windows, Variants, Classes, SysUtils, Graphics, LinkedList,
+USES LCLIntf, LCLType, LMessages, Variants, Classes, SysUtils, Graphics, LinkedList,
 	Map, MapObject, Animation;
 
 CONST DEFAULT_SPEED = 3;
@@ -32,7 +34,7 @@ TYPE TPacman = CLASS(TMobileObject)
 		nextDirection : INTEGER;
 		currentAnimation : TAnimation;
 		animations : ARRAY[0..9] OF TAnimation;
-        poweruptimer : INTEGER;
+		poweruptimer : INTEGER;
 END;
 
 IMPLEMENTATION

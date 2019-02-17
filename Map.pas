@@ -1,8 +1,10 @@
 unit Map;
 
+{$MODE Delphi}
+
 INTERFACE
 
-USES windows, sysutils, graphics;
+USES LCLIntf, LCLType, LMessages, sysutils, graphics, types;
 
 CONST TILE_SIZE = 24;
 

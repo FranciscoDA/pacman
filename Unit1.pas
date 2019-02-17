@@ -1,9 +1,11 @@
 unit Unit1;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  LCLIntf, LCLType, LMessages, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, LinkedList,
 	Pacman, Ghost, Map, Food, MapObject, Astar;
 
@@ -27,7 +29,7 @@ var
 
 IMPLEMENTATION
 
-{$R *.dfm}
+{$R *.lfm}
 
 PROCEDURE TForm1.onkeydown(Sender: TObject; var Key: Word;
   Shift: TShiftState);

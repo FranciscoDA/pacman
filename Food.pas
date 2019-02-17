@@ -1,8 +1,10 @@
 unit Food;
 
+{$MODE Delphi}
+
 INTERFACE
 
-USES Windows, Graphics, Classes, MapObject, Map, LinkedList;
+USES LCLIntf, LCLType, LMessages, Graphics, Classes, MapObject, Map, LinkedList;
 
 VAR gfx : ARRAY [1..2] OF TBitmap;
 

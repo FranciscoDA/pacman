@@ -1,8 +1,10 @@
 UNIT Ghost;
 
+{$MODE Delphi}
+
 INTERFACE
 
-USES Windows, Graphics, Classes, Map, MapObject, LinkedList, Animation,
+USES LCLIntf, LCLType, LMessages, Graphics, Classes, Map, MapObject, LinkedList, Animation,
 	Astar;
 
 CONST NUM_COLORS = 4;

@@ -1,5 +1,7 @@
 UNIT Astar;
 
+{$MODE Delphi}
+
 INTERFACE
 
 USES LinkedList, Map, MapObject;

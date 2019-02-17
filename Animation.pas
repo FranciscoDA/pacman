@@ -1,5 +1,7 @@
 UNIT Animation;
 
+{$MODE Delphi}
+
 INTERFACE
 
 TYPE TAnimation = CLASS
