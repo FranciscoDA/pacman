@@ -3,9 +3,11 @@ A pac-man clone written in Pascal
 
 ## Compiling with Lazarus IDE
 
-Import the Project1.lpi project file and compile from Lazarus IDE
+Import the `Project1.lpi project file and compile from Lazarus IDE
 
 ## Compiling without Lazarus IDE
+See the [this FreePascal wiki article](https://wiki.freepascal.org/Using_the_LCL_without_Lazarus) regarding compilation of LCL projects without Lazarus IDE
+
  * Install `fpc` and `lcl` packages
  * Compile by running `lazbuild src/Project1.lpi`
  * The output binary can be found in `out/Project1`
